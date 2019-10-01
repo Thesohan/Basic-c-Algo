@@ -1,63 +1,101 @@
-#include<iostream>
+#include <bits/stdc++.h>
+#define ll long long
 using namespace std;
-void  part(int[],int ,int);
-void merge_sort(int[],int,int,int);
-int main()
-{
-  int i,a[111],n;
-  cout<<"enter no. of elements\n";
-  cin>>n;
-  cout<<"enter your elements\n";
-  for(i=0;i<n;i++)
-   cin>>a[i];
-  part(a,0,n-1);
- for(i=0;i<n;i++)
- {cout<<a[i];
-  cout<<"\t";
+
+vector<string> split_string(string);
+// long long s=0;
+ll merge(vector<int> &arr, int begining, int mid,int end){
+    int s=0;
+    int beg=begining;
+    vector<int> temp1,temp2;
+    // cout<<"temp1 -->>";
+    for(int i=beg;i<=mid;i++){
+        temp1.push_back(arr[i]);
+        // cout  << arr[i] << " ";
+        // cout << "\n";
+    }
+    // cout<<"\n temp2-->> ";
+    for (int i = mid + 1; i <=end; i++) {
+      temp2.push_back(arr[i]);
+      // cout << arr[i] << " ";
+    }
+// cout<<"\n";
+    int index1=0,index2=0;
+    while(index1<temp1.size() && index2<temp2.size()){
+        if(temp1[index1]<=temp2[index2]){
+            arr[beg++]=temp1[index1];
+            index1++; 
+        }
+        else{
+            s+=temp1.size()-index1;
+            // if(s%10000!=0)
+            // cout<<s<<"\n";
+            // cout<<s<<"<--";
+            arr[beg++]=temp2[index2];
+            index2++;
+        }
+        if(s>10000000)
+        cout<<"loop\n";
+        
+    }
+    while (index1 < temp1.size()) {
+        arr[beg++] = temp1[index1++];
+    }
+    while(index2<temp2.size()){
+        arr[beg++]=temp2[index2++];
+    }
+    return s;
 }
+ll mergeSort(vector<int>&arr,int beg,int end){
+    ll s=0;
+    if(beg<end){
+      int mid = (beg + end) / 2;
+      // cout<<mid<<"<-- mid"<<"\n";
+      s+=mergeSort(arr,beg,mid);
+      s+=mergeSort(arr,mid+1,end);
+      s+=merge(arr,beg,mid,end);
+    }
+    return s;
+
+
 }
 
-void part(int a[],int beg,int end)
-{
-  int mid;
-  if(beg<end)
-  {
-     mid=(beg+end)/2;
-     part(a,beg,mid);  //it will do partition of the 1st portion, till each array doesn't have only 1 element
-     part(a,mid+1,end); //it will do partition of the 2nd portion, till each array doesn't have only 1 element
-     merge_sort(a,beg,mid,end);  //it will merge and sort the two partition
-  }
+// Complete the countInversions function below.
+ll countInversions(vector<int> arr) {
+  cout<<"inside countInversions";
+ return mergeSort(arr,0,arr.size()-1);
+  // cout<<"\n";
+  // for(int i=0;i<arr.size();i++){
+  //   cout<<arr[i]<<" ";
+  // }
+  // return s;
 }
 
-void merge_sort(int a[],int beg,int mid, int end)
-{ 
-  int k,i=0,j=0;
-  int temp1[mid-beg+1],temp2[end-mid];
-   for(k=0;k<(mid-beg+1);k++)
-     temp1[k]=a[beg+k];
-   for(k=0;k<end-mid;k++)
-     temp2[k]=a[k+mid+1];
-    k=beg;
-while(i!=mid-beg+1 && j!=end-mid)
-{
-  if(temp1[i]<=temp2[j])
-  {  a[k]=temp1[i];
-    i++;
-  }
-   else
- {  a[k]=temp2[j];
-    j++;
-   }
-k++;
-}
-    while(j<end-mid)
-    { a[k]=temp2[j];
-      j++;k++;
-   }
-  
-   while(i<mid-beg+1)
-    { a[k]=temp1[i];
-      i++;k++;
-   } 
+int main() {
+    int n;
+    int t;
+    cin>>t;
+    while(t--){
+
+    cin >> n;
+// if(t!=2)
+  // continue;
+ 
+    vector<int> arr(n);
+
+    for (int i = 0; i < n; i++) {
+      int a;
+       cin>>a;
+      arr.push_back(a);
+    }
+    // s=0;
+
+    ll result = countInversions(arr);
+    cout<<result<<"\n";
+    
+    // cout<<t;
 }
 
+
+  return 0;
+}
