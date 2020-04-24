@@ -1,0 +1,53 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    int t;
+    cin>>t;
+    while(t--){
+        int n;
+        cin>>n;
+        vector<int>a(0,n);
+        for(int i=0;i<n;i++){
+            cin>>a[i];
+        }
+        
+        vector<int>b(0,n);
+        for(int i=0;i<n;i++){
+            cin>>b[i];
+        }
+        
+        vector<int>dif(n,0);
+        bool alter=false;
+        for(int i=0;i<n;i++){
+            dif[i]=b[i]-a[i];
+            if(dif[i]<0){
+                alter=true;
+                cout<<"No\n";
+                break;
+                
+            }
+        }
+        if(!alter){
+            int j=0;
+            bool allZero = false;
+            while(j<n && dif[j]==0){
+                j++;
+            }
+            if(j==n){
+                allZero=true;
+            }
+            while(j<n&& dif[j]!=0 &&j+1<n &&dif[j+1]==dif[j] ){
+                j++;
+            }
+            while(j<n &&dif[j]==0){
+                j++;
+            }
+            if(j!=n || allZero){
+                cout<<"No\n";
+            }
+            else{
+                cout<<"Yes\n";
+            }
+        }
+    }
+}
